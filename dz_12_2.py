@@ -18,7 +18,9 @@ class BeeElephant:
             self.bee = self.bee + value if self.bee + value < 100 else 100
         elif meal == "grass":
             self.bee = self.bee - value if self.bee - value > 0 else 0
-            self.elephant = self.elephant + value if self.elephant + value < 100 else 100
+            self.elephant = (
+                self.elephant + value if self.elephant + value < 100 else 100
+            )
         else:
             print("Переданное meal не верно!! Передайте или nectar или grass")
 
