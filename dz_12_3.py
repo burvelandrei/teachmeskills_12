@@ -33,12 +33,51 @@ class Bus:
     def increase_speed(self, value):
         self._speed = self._speed + value if self._speed + value < self._max_speed else self._max_speed
 
-    def disembarkation_of_passengers(self, count_passengers):
-        pass
+    def boarding_passengers(self, *args):
+        if len(self._list_passengers_name) + len(args) <= self.max_count_seats:
+            self._list_passengers_name += args
+        self._vakancy_flag = True if len(self._list_passengers_name) < self._max_count_seats else False
+
+    def disembarkation_of_passengers(self, *args):
+        for name_passenger in args:
+            self._list_passengers_name.remove(name_passenger)
+        self._vakancy_flag = True if len(self._list_passengers_name) < self._max_count_seats else False
+
+    def __iadd__(self, other):
+        if len(self._list_passengers_name) < self._max_count_seats:
+            self._list_passengers_name.append(other)
+            self._vakancy_flag = True if len(self._list_passengers_name) < self._max_count_seats else False
+            return self
+        self._vakancy_flag = True if len(self._list_passengers_name) < self._max_count_seats else False
+        return self
+
+    def __isub__(self, other):
+        self._list_passengers_name.remove(other)
+        self._vakancy_flag = True if len(self._list_passengers_name) < self._max_count_seats else False
+        return self
+
+    def __contains__(self, other):
+        return other in self._list_passengers_name
 
 
 
 
-bus = Bus(45, 10, 100, ["Иванов", "Петров", "Смирнов", "Гришин"], True)
+bus = Bus(45, 5, 100, ["Иванов", "Петров", "Смирнов", "Гришин"], True)
+print("-" * 50)
 bus.increase_speed(65)
 print(bus.speed)
+print("-" * 50)
+bus.boarding_passengers("Бурвель", "Вакульчик")
+print(bus.list_passengers_name)
+print("-" * 50)
+bus.disembarkation_of_passengers("Гришин", "Смирнов")
+print(bus.list_passengers_name)
+print("-" * 50)
+bus += "Рыбин"
+print(bus.list_passengers_name)
+print("-" * 50)
+bus -= "Иванов"
+print(bus.list_passengers_name)
+print("-" * 50)
+print("Петров" in bus)
+print("-" * 50)
