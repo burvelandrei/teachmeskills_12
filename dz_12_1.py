@@ -1,16 +1,12 @@
-from dataclasses import dataclass
-
-
-@dataclass
 class Product:
     """
     Класс Товар с закрытыми атрибутами наимаенование товара,
     магазин продавец, цена товара
     """
-
-    __name: str
-    __store_name: str
-    __price: float
+    def __init__(self, name: str, store_name: str, price: float):
+        self.__name = name
+        self.__store_name = store_name
+        self.__price = price
 
     @property
     def name(self):
@@ -23,6 +19,9 @@ class Product:
     @property
     def price(self):
         return self.__price
+
+    def __add__(self, other):
+        return self.__price + other.__price
 
 
 class Warehouse:
@@ -72,6 +71,13 @@ class Warehouse:
     def sort_by_price(self):
         self.__products = sorted(self.__products, key=lambda product: product.price)
 
+    def __str__(self):
+        output = ""
+        for product in self.__products:
+            output += f"{product.name}|{product.store_name}|{product.price} руб"
+            if product != self.__products[-1]:  #костыль
+                output += "\n"
+        return output
 
 orange = Product("Апельсин", "Пятёрочка", 5)
 apple = Product("Яблоко", "Евроопт", 4)
@@ -79,8 +85,19 @@ milk = Product("Молоко", "Виталюр", 3)
 banan = Product("Банан", "Санта", 8)
 
 warehouse = Warehouse(orange, apple, milk, banan)
+print("-"*30)
 warehouse.output_by_name("яблоко")
+print("-"*30)
 warehouse.output_by_index(2)
+print("-"*30)
 warehouse.sort_by_name()
+print(warehouse)
+print("-"*30)
 warehouse.sort_by_store_name()
+print(warehouse)
+print("-"*30)
 warehouse.sort_by_price()
+print(warehouse)
+print("-"*30)
+print(orange + banan)
+print("-"*30)
