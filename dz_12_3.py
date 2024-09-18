@@ -64,6 +64,7 @@ class Bus:
                     self._dict_of_seats[seat] = other
                     self._list_passengers_name.append(other)
             return self
+        print("В автобусе нет мест!")
         self._vakancy_flag = (
             True if len(self._list_passengers_name) < self._max_count_seats else False
         )
